@@ -9,15 +9,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero; // Importe esta anotação
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Entidade JPA que representa um produto na tabela "products".
- * Contém os campos e as regras de validação para os dados de um produto.
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,11 +37,17 @@ public class Modelo_Produto {
     @Positive(message = "O preço deve ser maior que zero.")
     @Column(nullable = false)
     private Double preco;
+    
+    // --- CAMPO NOVO ADICIONADO ---
+    @PositiveOrZero(message = "O custo deve ser um número positivo ou zero.")
+    @Column(nullable = false, columnDefinition = "double default 0.0") // Adicionado valor padrão
+    private Double custo;
 
-    @Positive(message = "A quantidade em estoque deve ser um número positivo.")
+    @PositiveOrZero(message = "A quantidade em estoque deve ser um número positivo.")
     @Column(name = "stock_quantity")
     private Integer quantidadeEstoque;
 
     @Column(name = "creation_date", updatable = false)
     private LocalDateTime dataCriacao;
 }
+

@@ -49,7 +49,7 @@ class ModeloProdutoServiceTest {
     void testSave() {
         // Given (Dado)
         ProdutoRequestDTO dto = new ProdutoRequestDTO("Produto X", "Desc", 10.0, 5);
-        Modelo_Produto produtoSalvo = new Modelo_Produto(1L, "Produto X", "Desc", 10.0, 5, null);
+        Modelo_Produto produtoSalvo = new Modelo_Produto(1L, "Produto X", "Desc", 10.0, null, 5, null);
         when(produtoRepository.save(any(Modelo_Produto.class))).thenReturn(produtoSalvo);
 
         // When (Quando)

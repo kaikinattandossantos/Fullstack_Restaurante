@@ -11,10 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @OpenAPIDefinition(
-    info = @Info(title = "API de Produtos", version = "1.0", description = "API para gerenciamento de um cadastro de produtos.")
+    info = @Info(title = "API de Pedidos e Produtos", version = "1.0", description = "API para gerenciamento de um cadastro de produtos e recebimento de pedidos.")
 )
 public class NeurotechApplication {
     public static void main(String[] args) {
         SpringApplication.run(NeurotechApplication.class, args);
     }
 }
+
