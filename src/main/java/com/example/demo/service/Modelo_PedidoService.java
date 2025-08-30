@@ -46,6 +46,8 @@ public class Modelo_PedidoService {
             itemPedido.setPrecoUnitario(produto.getPreco());
             itemPedido.setCustoUnitario(produto.getCusto());
             itemPedido.setPedido(novoPedido);
+            itemPedido.setDescricaoCliente(itemDTO.descricao());
+
             
             itensDoPedido.add(itemPedido);
             

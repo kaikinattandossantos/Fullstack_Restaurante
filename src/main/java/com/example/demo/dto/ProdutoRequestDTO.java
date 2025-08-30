@@ -17,6 +17,10 @@ public record ProdutoRequestDTO(
     @Positive(message = "O preço deve ser maior que zero.")
     Double preco,
 
+    @Positive(message = "O custo deve ser maior que zero.")
+    Double custo,
+
     @Positive(message = "A quantidade em estoque deve ser um número positivo.")
     Integer quantidadeEstoque
 ) {}
+

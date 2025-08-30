@@ -34,4 +34,7 @@ public class Modelo_ItemPedido {
     @JoinColumn(name = "order_id", nullable = false)
     @JsonIgnore
     private Modelo_Pedido pedido;
+
+    private String descricaoCliente; 
+
 }

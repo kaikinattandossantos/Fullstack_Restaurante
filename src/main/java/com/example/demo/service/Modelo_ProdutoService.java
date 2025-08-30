@@ -23,7 +23,7 @@ public class Modelo_ProdutoService {
     private final ProdutoRepository produtoRepository;
 
     /**
-     * Construtor com injeção de dependência. 
+     * Construtor com injeção de dependência.
      * @param produtoRepository O repositório de dados para a entidade Produto.
      */
     @Autowired
@@ -40,7 +40,7 @@ public class Modelo_ProdutoService {
     @Transactional(readOnly = true) // Otimização: indica ao JPA que esta transação não fará alterações no banco.
     public List<ProdutoResponseDTO> findAll(String name, String sort) {
         Sort sortOrder = Sort.by("nome").ascending(); // Define uma ordenação padrão.
-        
+
         if (sort != null) {
             if (sort.equalsIgnoreCase("preco,asc")) {
                 sortOrder = Sort.by("preco").ascending();
@@ -49,7 +49,6 @@ public class Modelo_ProdutoService {
             }
         }
 
-        // Verifica se a lista está vazia
         List<Modelo_Produto> produtos;
         if (name != null && !name.trim().isEmpty()) {
             produtos = produtoRepository.findByNomeContainingIgnoreCase(name, sortOrder);
@@ -85,9 +84,9 @@ public class Modelo_ProdutoService {
         Modelo_Produto produto = new Modelo_Produto();
         produto.setNome(produtoDTO.nome());
         produto.setDescricao(produtoDTO.descricao());
-        produto.setPreco(produtoDTO.preco());
         produto.setQuantidadeEstoque(produtoDTO.quantidadeEstoque());
-        
+        produto.setPreco(produtoDTO.preco()); 
+        produto.setCusto(produtoDTO.custo()); 
         // A data de criação é definida pelo servidor para garantir a integridade do dado.
         produto.setDataCriacao(LocalDateTime.now());
 
@@ -108,20 +107,22 @@ public class Modelo_ProdutoService {
         Modelo_Produto existingProduto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado para atualização com o ID: " + id));
 
-        // Lógica de atualização parcial: só atualiza os campos que não forem nulos no DTO.
-        // Isso permite que o cliente envie apenas os campos que deseja alterar.
         if (produtoDetailsDTO.nome() != null) {
             existingProduto.setNome(produtoDetailsDTO.nome());
         }
         if (produtoDetailsDTO.descricao() != null) {
             existingProduto.setDescricao(produtoDetailsDTO.descricao());
         }
-        if (produtoDetailsDTO.preco() != null) {
-            existingProduto.setPreco(produtoDetailsDTO.preco());
-        }
         if (produtoDetailsDTO.quantidadeEstoque() != null) {
             existingProduto.setQuantidadeEstoque(produtoDetailsDTO.quantidadeEstoque());
         }
+        if (produtoDetailsDTO.preco() != null) {
+            existingProduto.setPreco(produtoDetailsDTO.preco());
+        }
+        if (produtoDetailsDTO.custo() != null) {
+            existingProduto.setCusto(produtoDetailsDTO.custo());
+        }
+
 
         Modelo_Produto produtoAtualizado = produtoRepository.save(existingProduto);
         return new ProdutoResponseDTO(produtoAtualizado);
@@ -133,10 +134,10 @@ public class Modelo_ProdutoService {
      */
     @Transactional
     public void deleteById(Long id) {
-        // Verifica se o produto existe antes de tentar deletar para fornecer uma mensagem de erro mais clara.
         if (!produtoRepository.existsById(id)) {
             throw new ResourceNotFoundException("Produto não encontrado para remoção com o ID: " + id);
         }
         produtoRepository.deleteById(id);
     }
 }
+
