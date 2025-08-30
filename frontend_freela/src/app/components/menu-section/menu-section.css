@@ -1,0 +1,19 @@
+.menu-section {
+  margin-bottom: 40px;
+
+  h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+
+  &.horizontal-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}

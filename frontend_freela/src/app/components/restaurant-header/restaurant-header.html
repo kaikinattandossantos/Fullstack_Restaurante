@@ -1,0 +1,16 @@
+<div class="restaurant-container">
+  <img [src]="restaurant?.bannerUrl" alt="Banner" class="banner-image">
+  <div class="container info-bar">
+    <img [src]="restaurant?.logoUrl" alt="Logo" class="logo-image">
+    <div class="info-text">
+      <h1>{{ restaurant?.name }}</h1>
+      <div class="rating">
+        <i class="bi bi-star-fill"></i>
+        <span>{{ restaurant?.rating }}</span>
+      </div>
+    </div>
+    <div class="details">
+      <span>Pedido mínimo R$ {{ restaurant?.minOrderValue.toFixed(2) }}</span>
+    </div>
+  </div>
+</div>

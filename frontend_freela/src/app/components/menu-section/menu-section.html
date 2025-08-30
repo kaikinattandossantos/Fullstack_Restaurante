@@ -1,0 +1,6 @@
+<section class="menu-section">
+  <h2>{{ section?.title }}</h2>
+  <div class="items-grid" [class.horizontal-layout]="section.items[0]?.layout === 'horizontal'">
+    <app-product-card *ngFor="let item of section?.items" [item]="item"></app-product-card>
+  </div>
+</section>

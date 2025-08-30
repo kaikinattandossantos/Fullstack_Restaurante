@@ -1,0 +1,13 @@
+<app-header></app-header>
+
+<main>
+  <app-restaurant-header [restaurant]="restaurantData"></app-restaurant-header>
+  <div class="container">
+    <app-menu-section
+      *ngFor="let section of menuData"
+      [section]="section">
+    </app-menu-section>
+  </div>
+</main>
+
+<app-footer></app-footer>
