@@ -1,10 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
+// Importe todos os componentes visuais que o app.html utiliza
 import { HeaderComponent } from './components/header/header';
 import { FooterComponent } from './components/footer/footer';
 import { RestaurantHeaderComponent } from './components/restaurant-header/restaurant-header';
 import { MenuSectionComponent } from './components/menu-section/menu-section';
+import { ProductDetailModalComponent } from './components/product-detail-modal/product-detail-modal.component';
+import { CartModalComponent } from './components/cart-modal/cart-modal.component';
+
+// Importe os serviços que este componente vai usar
+import { ModalService } from './services/modal.service';
+import { ProdutoService, Produto } from './services/produto.service';
 
 @Component({
   selector: 'app-root',
@@ -14,48 +22,64 @@ import { MenuSectionComponent } from './components/menu-section/menu-section';
     HeaderComponent,
     FooterComponent,
     RestaurantHeaderComponent,
-    MenuSectionComponent
+    MenuSectionComponent,
+    ProductDetailModalComponent, // Garanta que os modais estão nos imports
+    CartModalComponent
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
-export class AppComponent {
-  // Dados simulados com links de imagem e textos padronizados
+export class AppComponent implements OnInit {
+  // Variáveis para controlar a visibilidade dos modais no HTML
+  // O '$' no final é uma convenção para indicar que são Observables (fluxos de dados)
+  public isProductModalOpen$: Observable<boolean>;
+  public isCartModalOpen$: Observable<boolean>;
+
+  // Esta variável guardará os dados dos produtos que vêm do backend
+  menuData: any[] = [];
+
+  constructor(
+    // Injeção de dependência: O Angular fornece os serviços necessários aqui
+    private modalService: ModalService,
+    private produtoService: ProdutoService
+  ) {
+    // Conecta as variáveis locais aos Observables do ModalService.
+    // Agora, sempre que o serviço for alterado, estas variáveis serão atualizadas.
+    this.isProductModalOpen$ = this.modalService.isProductModalOpen$;
+    this.isCartModalOpen$ = this.modalService.isCartModalOpen$;
+  }
+
+  ngOnInit(): void {
+    // Quando o componente é iniciado, chama a função para buscar os produtos.
+    this.carregarProdutos();
+  }
+
+  carregarProdutos(): void {
+    this.produtoService.getProductos().subscribe({
+      next: (produtosDoBackend: Produto[]) => {
+        // Mapeia a lista de produtos para a estrutura que o template espera
+        this.menuData = [
+          {
+            title: 'Destaques',
+            // Adiciona a URL da imagem placeholder para cada produto
+            items: produtosDoBackend.map(p => ({
+              ...p,
+              imageUrl: 'https://placehold.co/300x150/cccccc/333333?text=Produto'
+            }))
+          }
+        ];
+      },
+      error: (erro) => console.error("Falha ao buscar produtos", erro)
+    });
+  }
+
+  // Dados estáticos para o cabeçalho do restaurante
   restaurantData = {
     name: 'Nome do Restaurante',
     rating: 4.6,
-    // Banner cinza genérico
-    bannerUrl: 'https://placehold.co/1200x200/e0e0e0/757575?text=Banner',
-    // Logo cinza genérico
-    logoUrl: 'https://placehold.co/80x80/cccccc/545454?text=Logo',
+    bannerUrl: 'https://placehold.co/1200x200/cccccc/333333?text=Banner',
+    logoUrl: 'https://placehold.co/80x80/eeeeee/333333?text=Logo',
     minOrderValue: 20.00
   };
-
-  menuData = [
-    {
-      title: 'Destaques',
-      items: [
-        { name: 'Nome do Produto 1', description: 'Descrição resumida do produto para o cliente.', imageUrl: 'https://placehold.co/300x150/f0f0f0/333?text=Produto' },
-        { name: 'Nome do Produto 2', description: 'Descrição resumida do produto para o cliente.', imageUrl: 'https://placehold.co/300x150/f0f0f0/333?text=Produto' },
-        { name: 'Nome do Produto 3', description: 'Descrição resumida do produto para o cliente.', imageUrl: 'https://placehold.co/300x150/f0f0f0/333?text=Produto' },
-        { name: 'Nome do Produto 4', description: 'Descrição resumida do produto para o cliente.', imageUrl: 'https://placehold.co/300x150/f0f0f0/333?text=Produto' },
-      ]
-    },
-    {
-      title: 'Promoções',
-      items: [
-        { name: 'Promoção 1', description: 'Descrição da promoção para chamar atenção.', price: 57.48, imageUrl: 'https://placehold.co/120x120/f0f0f0/333?text=Promo', layout: 'horizontal' },
-        { name: 'Promoção 2', description: 'Descrição da promoção para chamar atenção.', price: 31.48, imageUrl: 'https://placehold.co/120x120/f0f0f0/333?text=Promo', layout: 'horizontal' },
-        { name: 'Promoção 3', description: 'Descrição da promoção para chamar atenção.', price: 77.40, imageUrl: 'https://placehold.co/120x120/f0f0f0/333?text=Promo', layout: 'horizontal' },
-      ]
-    },
-    {
-        title: 'Lançamentos',
-        items: [
-            { name: 'Lançamento 1', description: 'Descrição do novo produto recém-lançado.', imageUrl: 'https://placehold.co/300x150/f0f0f0/333?text=Produto' },
-            { name: 'Lançamento 2', description: 'Descrição do novo produto recém-lançado.', imageUrl: 'https://placehold.co/300x150/f0f0f0/333?text=Produto' },
-        ]
-    }
-  ];
 }
 

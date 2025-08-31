@@ -1,0 +1,28 @@
+<div class="modal-backdrop" (click)="fecharModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="fecharModal()">X</button>
+
+    <ng-container *ngIf="produto$ | async as produto">
+      <h2>{{ produto.nome }}</h2>
+      <p>{{ produto.descricao }}</p>
+
+      <!-- Futuramente, aqui entrariam as opções de customização -->
+      <div class="customizacao">
+        <h4>Adicionais:</h4>
+        <label><input type="checkbox"> Bacon Extra (+ R$ 3,00)</label>
+        <label><input type="checkbox"> Queijo Extra (+ R$ 2,00)</label>
+      </div>
+
+      <div class="quantity-selector">
+        <button (click)="decrementar()">-</button>
+        <span>{{ quantidade }}</span>
+        <button (click)="incrementar()">+</button>
+      </div>
+
+      <button class="add-to-cart-button" (click)="adicionarAoCarrinho(produto)">
+        Adicionar ao carrinho
+      </button>
+    </ng-container>
+
+  </div>
+</div>

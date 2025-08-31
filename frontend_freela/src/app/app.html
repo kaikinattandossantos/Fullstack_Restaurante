@@ -1,13 +1,22 @@
 <app-header></app-header>
 
 <main>
+  <!-- Este é o conteúdo principal da sua página, que já existe -->
   <app-restaurant-header [restaurant]="restaurantData"></app-restaurant-header>
   <div class="container">
-    <app-menu-section
-      *ngFor="let section of menuData"
-      [section]="section">
-    </app-menu-section>
+    <app-menu-section *ngFor="let section of menuData" [section]="section"></app-menu-section>
   </div>
 </main>
 
 <app-footer></app-footer>
+
+<!-- ==================================================================== -->
+<!-- OS MODAIS FICAM AQUI, FORA DO CONTEÚDO PRINCIPAL -->
+<!-- Eles são controlados pelo *ngIf, que escuta as variáveis do app.ts -->
+
+<!-- Modal de Detalhes do Produto -->
+<app-product-detail-modal *ngIf="isProductModalOpen$ | async"></app-product-detail-modal>
+
+<!-- Modal do Carrinho -->
+<app-cart-modal *ngIf="isCartModalOpen$ | async"></app-cart-modal>
+<!-- ==================================================================== -->

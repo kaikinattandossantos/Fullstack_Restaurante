@@ -58,4 +58,15 @@
     align-self: center;
     margin-right: 15px;
   }
+}/* ... seu css existente ... */
+
+/* Adicione esta regra para indicar que o card é clicável */
+.card {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }

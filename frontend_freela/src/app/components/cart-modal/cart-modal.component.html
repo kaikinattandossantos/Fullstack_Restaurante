@@ -1,0 +1,34 @@
+<!-- A estrutura do modal (backdrop, content) é a mesma para consistência visual -->
+<div class="modal-backdrop" (click)="fecharModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="fecharModal()">X</button>
+
+    <h3>Meu Carrinho</h3>
+
+    <!-- Usamos o pipe 'async' para "desembrulhar" os itens do Observable -->
+    <ng-container *ngIf="itensDoCarrinho$ | async as itens">
+      
+      <!-- Mensagem de carrinho vazio -->
+      <div *ngIf="itens.length === 0" class="carrinho-vazio">
+        <p>Seu carrinho está vazio.</p>
+      </div>
+
+      <!-- Lista de itens no carrinho -->
+      <ul *ngIf="itens.length > 0">
+        <li *ngFor="let item of itens">
+          <span>Produto ID #{{ item.produtoId }}</span>
+          <span>x {{ item.quantidade }}</span>
+        </li>
+      </ul>
+
+      <!-- Botão para finalizar o pedido -->
+      <button 
+        class="finish-button" 
+        *ngIf="itens.length > 0" 
+        (click)="finalizarPedido()">
+        Finalizar Pedido
+      </button>
+
+    </ng-container>
+  </div>
+</div>

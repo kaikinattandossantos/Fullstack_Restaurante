@@ -1,17 +1,14 @@
-<div class="card card-vertical" *ngIf="item.layout !== 'horizontal'">
-  <img [src]="item.imageUrl" alt="{{ item.name }}">
+<!-- Adicionamos o (click) para capturar a ação do usuário -->
+<div class="card card-vertical" (click)="abrirDetalhes()">
+  
+  <!-- CORREÇÃO: Removido o '?' de todas as propriedades de 'item' -->
+  <img [src]="item.imageUrl" [alt]="item.nome">
+  
   <div class="card-content">
-    <h3>{{ item.name }}</h3>
-    <p class="description">{{ item.description }}</p>
-    <p class="price" *ngIf="item.price">A partir de R$ {{ item.price.toFixed(2) }}</p>
+    <h3>{{ item.nome }}</h3>
+    <p class="description">{{ item.descricao }}</p>
+    <!-- O *ngIf continua, pois ele verifica se a propriedade 'preco' existe no objeto -->
+    <p class="price" *ngIf="item.preco">A partir de R$ {{ item.preco.toFixed(2) }}</p>
   </div>
 </div>
 
-<div class="card card-horizontal" *ngIf="item.layout === 'horizontal'">
-  <div class="card-content">
-    <h3>{{ item.name }}</h3>
-    <p class="description">{{ item.description }}</p>
-    <p class="price">A partir de R$ {{ item.price.toFixed(2) }}</p>
-  </div>
-  <img [src]="item.imageUrl" alt="{{ item.name }}">
-</div>

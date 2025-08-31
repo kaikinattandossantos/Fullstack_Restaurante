@@ -1,0 +1,55 @@
+<div class="form-container">
+  <h2>Faça seu Pedido</h2>
+
+  <!-- Nome do Cliente -->
+  <div class="form-group">
+    <label for="nomeCliente">Seu Nome:</label>
+    <input type="text" id="nomeCliente" [(ngModel)]="novoPedido.nomeCliente" placeholder="Digite seu nome">
+  </div>
+
+  <hr>
+
+  <!-- Seção para Adicionar Itens -->
+  <h3>Adicionar Item ao Pedido</h3>
+  <div class="item-adder">
+    <div class="form-group">
+      <label for="produto">Produto:</label>
+      <select id="produto" [(ngModel)]="itemAtual.produtoId">
+        <option value="0" disabled>Selecione um produto</option>
+        <option *ngFor="let produto of produtosDisponiveis" [value]="produto.id">
+          {{ produto.nome }} - ({{ produto.preco | currency:'BRL' }})
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="quantidade">Quantidade:</label>
+      <input type="number" id="quantidade" [(ngModel)]="itemAtual.quantidade" min="1">
+    </div>
+
+    <div class="form-group">
+        <label for="descricao">Observação (opcional):</label>
+        <input type="text" id="descricao" [(ngModel)]="itemAtual.descricaoCliente" placeholder="Ex: Sem cebola">
+    </div>
+
+    <button (click)="adicionarItem()">Adicionar Item</button>
+  </div>
+
+  <hr>
+
+  <!-- Carrinho / Resumo do Pedido -->
+  <h3>Itens no seu Pedido</h3>
+  <div *ngIf="novoPedido.itens.length === 0" class="empty-cart">
+    <p>Seu carrinho está vazio.</p>
+  </div>
+  <ul>
+    <li *ngFor="let item of novoPedido.itens">
+        {{ item.quantidade }}x Produto ID #{{ item.produtoId }}
+        <span *ngIf="item.descricaoCliente"> - Obs: "{{ item.descricaoCliente }}"</span>
+    </li>
+  </ul>
+
+
+  <!-- Botão para Enviar o Pedido Completo -->
+  <button class="submit-button" (click)="enviarPedido()">Enviar Pedido</button>
+</div>

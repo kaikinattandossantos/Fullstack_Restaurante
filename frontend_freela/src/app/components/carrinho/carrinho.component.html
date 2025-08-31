@@ -1,0 +1,15 @@
+<div class="carrinho-container">
+    <h3>Meu Carrinho</h3>
+    <div *ngIf="(itensDoCarrinho$ | async) as itens">
+        <div *ngIf="itens.length === 0" class="carrinho-vazio">
+            <p>Seu carrinho está vazio.</p>
+        </div>
+
+        <ul>
+            <li *ngFor="let item of itens">
+                Produto ID #{{ item.produtoId }} - Quantidade: {{ item.quantidade }}
+            </li>
+        </ul>
+        <button (click)="finalizarPedido()" *ngIf="itens.length > 0">Finalizar Pedido</button>
+    </div>
+</div>

@@ -1,15 +1,25 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common'; // <-- Importe para usar *ngIf
+import { CommonModule } from '@angular/common';
+import { ModalService } from '../../services/modal.service';
+import { Produto } from '../../services/produto.service';
 
 @Component({
   selector: 'app-product-card',
-  standalone: true,  // <-- Adicionado para tornar o componente independente
-  imports: [
-    CommonModule   // <-- Adicione aqui para poder usar *ngIf e *ngFor no template
-  ],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './product-card.html',
   styleUrls: ['./product-card.css']
 })
+// Verifique se a palavra 'export' e o nome 'ProductCardComponent' estão corretos.
 export class ProductCardComponent {
-  @Input() item: any;
+  @Input() item!: Produto;
+
+  constructor(private modalService: ModalService) {}
+
+  abrirDetalhes(): void {
+    if (this.item) {
+      this.modalService.openProductModal(this.item);
+    }
+  }
 }
+
